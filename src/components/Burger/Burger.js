@@ -20,8 +20,6 @@ const burger = (props) => {
         ingredients = <p> Please start adding ingredients!</p>
     }
 
-    console.log(ingredients)
-
 
 
     return (
@@ -31,6 +29,7 @@ const burger = (props) => {
 
             <BurgerIngredient type='bread-bottom'></BurgerIngredient>
         </div>
+
     )
 }
 
