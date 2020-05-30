@@ -101,6 +101,10 @@ class BurguerBuilder extends Component{
         this.setState({purchasing:false})
     }
 
+    purchaseContinueHandler = () =>{
+        console.log('Continue... Hold on a second')
+    }
+
 
 
     render() {
@@ -113,7 +117,9 @@ class BurguerBuilder extends Component{
         return(
             <Aux>
                 <Modal visible={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                    <OrderSummary ingredients={this.state.ingredients}></OrderSummary>
+                    <OrderSummary ingredients={this.state.ingredients} 
+                    purchaseContinued = {this.purchaseContinueHandler} 
+                    purchaseCancelled={this.purchaseCancelHandler}></OrderSummary>
                 </Modal>
                 <Burger ingredients = {this.state.ingredients}></Burger>
                 <BuildControls addIngredient = {this.addIngredientHandler} 
