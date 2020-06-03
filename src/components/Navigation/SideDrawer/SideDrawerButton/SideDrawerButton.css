@@ -1,0 +1,21 @@
+.SideDrawerButton {
+    height: 100%;
+    width: 48px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.ToggleButtonBar{
+    width: 100%;
+    background-color: white;
+    height: 3.2px;
+    display: block;
+    margin: 9.6px 0;
+}
+
+@media(min-width:500px){
+    .SideDrawerButton{
+        display: none;
+    }
+}
