@@ -113,7 +113,17 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
 
-       this.props.history.push('/checkout')
+        const queryParams = []
+        for(let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))  
+        }
+        const queryString = queryParams.join('&')
+        
+
+        this.props.history.push({
+            pathname:'/checkout',
+            search:'?' + queryString
+        })
 
     }
 
@@ -133,7 +143,7 @@ class BurgerBuilder extends Component {
 
         if (this.state.ingredients) {
             burger = (
-                <Aux>                
+                <Aux>
                     <Burger ingredients={this.state.ingredients}></Burger>
                     <BuildControls addIngredient={this.addIngredientHandler}
                         removeIngredient={this.removeIngredientHandler}
