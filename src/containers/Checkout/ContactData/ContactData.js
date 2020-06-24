@@ -70,20 +70,12 @@ class ContactData extends Component {
         event.preventDefault();
         this.setState({loading:true})
 
-        const order ={
-            ingredients: this.props.ingredients,
-            price: this.props.price,
-            costumer:{
-                name: 'Lucas',
-                address:{
-                    street: 'Av Barão louco',
-                    zipCode: '444-332',
-                    country:'Brazil'
-                },
-                email:'test@test.com'
-            },
-            deliveryMethod:'fastest'
+        let order ={}
+        for(let formElement in this.state.orderForm) {
+            order[formElement] = this.state.orderForm[formElement].value
+
         }
+
 
         axios.post('/orders.json',order).then((response) => {
             this.setState({
