@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import classes from './ContactData.css'
 
 import axios from '../../../axios-orders'
-import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import Button  from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
@@ -97,12 +97,19 @@ class ContactData extends Component {
         event.preventDefault();
         this.setState({loading:true})
 
-        let order ={}
+        let formData ={}
         for(let formElement in this.state.orderForm) {
-            order[formElement] = this.state.orderForm[formElement].value
+            formData[formElement] = this.state.orderForm[formElement].value
 
         }
 
+        const order = {
+            ingredients: this.props.ings,
+            price:this.props.price,
+            orderData:formData
+        }
+
+       
 
         axios.post('/orders.json',order).then((response) => {
             this.setState({
@@ -202,4 +209,12 @@ class ContactData extends Component {
     }
 }
 
-export default withRouter(ContactData);
+
+const mapStateToProps = (state) =>{
+    return{
+        ings: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(ContactData);
