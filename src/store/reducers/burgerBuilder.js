@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes'
+import {updateObject} from '../../utility'
 
 const initialState  = {
     ingredients:null,
@@ -16,38 +17,33 @@ const INGREDIENTS_PRICE = {
 
 const reducer = (state = initialState,action) => {
         switch(action.type){
+            
             case actionTypes.ADD_INGREDIENT:
-                return{
-                    ...state,
-                    ingredients:{
-                        ...state.ingredients,
-                        [action.ingredientName]: state.ingredients[action.ingredientName] + 1 
-                    },
+                const updatedIngredient = updateObject({[action.ingredientName]: state.ingredients[action.ingredientName] + 1 })
+                const updatedIngredients = updateObject(state.ingredients,updatedIngredient)
+                const updatedState = {
+                    ingredients: updatedIngredients,
                     totalPrice: state.totalPrice + INGREDIENTS_PRICE[action.ingredientName]
                 }
+                return updateObject(state,updatedState)
             
             case actionTypes.REMOVE_INGREDIENT:
-                return{
-                    ...state,
-                    ingredients:{
-                        ...state.ingredients,
-                        [action.ingredientName]: state.ingredients[action.ingredientName] - 1 
-                    },
+                const upIngredient = updateObject({[action.ingredientName]: state.ingredients[action.ingredientName] - 1 })
+                const upIngredients = updateObject(state.ingredients,upIngredient)
+                const upState = {
+                    ingredients: upIngredients,
                     totalPrice: state.totalPrice - INGREDIENTS_PRICE[action.ingredientName]
                 }
+                return updateObject(state,upState)
             case actionTypes.SET_INGREDIENTS:
-                return{
-                    ...state,
+                return updateObject(state,{
                     ingredients: action.ingredients,
                     totalPrice:initialState.totalPrice,
-                    error:false
-                }
+                    error:false})
+                
             
             case actionTypes.FETCH_INGREDIENTS_FAILED:
-                return{
-                    ...state,
-                    error:true
-                }
+                return updateObject(state,{error:true})
                 
             default:
                 return state;
