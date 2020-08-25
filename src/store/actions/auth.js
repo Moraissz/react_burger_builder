@@ -60,3 +60,10 @@ export const auth = (email,password,isSignUp) => {
         })
     }
 }
+
+export const authRedirectPath = (path) => {
+    return {
+        type: actions.SET_AUTH_REDIRECT_PATH,
+        path
+    }
+}
