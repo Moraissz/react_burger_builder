@@ -23,6 +23,9 @@ const authFail = (error) => {
 }
 
 export const authLogout = () => {
+    localStorage.removeItem('tokenId')
+    localStorage.removeItem('expirationDate')
+    localStorage.removeItem('userId')
     return{
         type:actions.AUTH_LOGOUT
     }
@@ -50,6 +53,10 @@ export const auth = (email,password,isSignUp) => {
             url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAKSwRRTwi614PjcoR0w15CF_1bL-ZdeOs'
         axios.post(url,authData)
         .then((response)=>{
+            const expirationDate = new Date(new Date().getTime() +  response.data.expiresIn * 1000) 
+            localStorage.setItem('tokenId',response.data.idToken)
+            localStorage.setItem('expirationDate',expirationDate)
+            localStorage.setItem('userId',response.data.localId)
             dispatch(checkAuthTimeout(response.data.expiresIn))
             dispatch(authSuccess(response.data.idToken,response.data.localId))
             
@@ -66,4 +73,28 @@ export const authRedirectPath = (path) => {
         type: actions.SET_AUTH_REDIRECT_PATH,
         path
     }
+}
+
+export const authCheckState = () => {
+    return dispatch => {
+        const token = localStorage.getItem('tokenId')
+        if(!token){
+            dispatch(authLogout())
+        }
+        else{
+            const expirationDate = new Date(localStorage.getItem('expirationDate'))
+
+
+            if(expirationDate < new Date() ){
+                dispatch(authLogout())
+            }
+            else{
+                const userId = localStorage.getItem('userId')
+                dispatch(authSuccess(token,userId))
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000))
+            }
+
+        }
+    }
+
 }
